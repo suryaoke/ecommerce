@@ -12,7 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('stores', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->uuid('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('name');
+            $table->string('logo');
+            $table->string('about');
+            $table->string('phone');
+            $table->string('address_id');
+            $table->string('city');
+            $table->string('address');
+            $table->string('postal_code');
+            $table->string('is_verified')->default('false');
             $table->timestamps();
         });
     }
