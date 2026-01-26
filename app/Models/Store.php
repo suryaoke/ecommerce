@@ -22,6 +22,10 @@ class Store extends Model
             'is_verified'
     ];
 
+    protected $casts = [
+        'is_verified' => 'boolean'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -39,5 +43,11 @@ class Store extends Model
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
+    }
+
+        public function scopeSearch($query, $search)
+    {
+        return $query->where('name', 'like', '%' . $search . '%')
+        ->orWhere('email', 'like', '%' . $search . '%');
     }
 }
