@@ -7,13 +7,13 @@ use App\Models\Store;
 
 class StoreRepository implements StoreRepositoryInterface
 {
-    public function getAll(?string $search,?bool $isVerified, ?int $limit,bool $exceute)
+    public function getAll(?string $search, ?bool $isVerified, ?int $limit, bool $exceute)
     {
         $query = Store::where(function ($query) use ($search, $isVerified) {
             if ($search) {
                 $query->search($search);
             }
-            if($isVerified !== null) {
+            if ($isVerified !== null) {
                 $query->where('is_verified', $isVerified);
             }
         });
@@ -29,12 +29,12 @@ class StoreRepository implements StoreRepositoryInterface
         return $query;
     }
 
-    public function getAllPaginated(?string $search,?bool $isVerified, ?int $rowPerPage)
+    public function getAllPaginated(?string $search, ?bool $isVerified, ?int $rowPerPage)
     {
         $query = $this->getAll(
             $search,
-            $rowPerPage,
-            $isVerified,
+            $isVerified,  
+            $rowPerPage, 
             false
         );
 

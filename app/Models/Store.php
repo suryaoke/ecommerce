@@ -3,23 +3,24 @@
 namespace App\Models;
 
 use App\Traits\UUID;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Store extends Model
 {
-    use UUID;
+    use UUID, HasFactory;
     //
     protected $fillable = [
-            'user_id',
-            'name',
-            'logo',
-            'about',
-            'phone',
-            'address_id',
-            'city',
-            'address',
-            'postal_code',
-            'is_verified'
+        'user_id',
+        'name',
+        'logo',
+        'about',
+        'phone',
+        'address_id',
+        'city',
+        'address',
+        'postal_code',
+        'is_verified'
     ];
 
     protected $casts = [
@@ -31,7 +32,8 @@ class Store extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function storeBallance(){
+    public function storeBallance()
+    {
         return $this->hasOne(Store::class);
     }
 
@@ -45,9 +47,8 @@ class Store extends Model
         return $this->hasMany(Transaction::class);
     }
 
-        public function scopeSearch($query, $search)
+    public function scopeSearch($query, $search)
     {
-        return $query->where('name', 'like', '%' . $search . '%')
-        ->orWhere('email', 'like', '%' . $search . '%');
+        return $query->where('name', 'like', '%' . $search . '%');
     }
 }
