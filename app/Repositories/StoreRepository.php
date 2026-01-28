@@ -4,6 +4,8 @@ namespace App\Repositories;
 
 use App\interfaces\StoreRepositoryInterface;
 use App\Models\Store;
+use Exception;
+use Illuminate\Support\Facades\DB;
 
 class StoreRepository implements StoreRepositoryInterface
 {
@@ -33,11 +35,65 @@ class StoreRepository implements StoreRepositoryInterface
     {
         $query = $this->getAll(
             $search,
-            $isVerified,  
-            $rowPerPage, 
+            $isVerified,
+            $rowPerPage,
             false
         );
 
         return $query->paginate($rowPerPage);
+    }
+
+    public function getById(string $id)
+    {
+        $query = Store::where('id', $id);
+
+        return $query->first();
+    }
+
+    public function create(
+        array $data
+    ) {
+        DB::beginTransaction();
+
+        try {
+            $store = new Store;
+            $store->user_id = $data['user_id'];
+            $store->name = $data['name'];
+            $store->logo = $data['logo']->store('assets/store', 'public');
+            $store->about = $data['about'];
+            $store->phone = $data['phone'];
+            $store->address_id = $data['address_id'];
+            $store->city = $data['city'];
+            $store->address = $data['address'];
+            $store->postal_code = $data['postal_code'];
+            $store->save();
+
+            $store->storeBallance()->create(['balance' => 0]);
+
+            DB::commit();
+
+            return $store;
+        } catch (\Exception  $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public function updateVerifiedStatus(
+        string $id,
+        bool $isVerified
+    ) {
+        DB::beginTransaction();
+
+        try {
+            $store = Store::find($id);
+            $store->is_verified = $isVerified;
+            $store->save();
+
+            DB::commit();
+            
+            return $store;
+        } catch (\Exception  $e) {
+            throw new Exception($e->getMessage());
+        }
     }
 }
