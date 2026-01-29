@@ -1,28 +1,35 @@
 <?php
-
 namespace App\Traits;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 trait UUID 
 {
-    protected static function boot()
+    /**
+     * Boot the UUID trait for the model.
+     */
+    public static function bootUUID(): void
     {
-        parent::boot();
-
-        static::creating(function ($model){
-            if ($model->getKey() === null) {
-                $model->setAttribute($model->getKeyName(), Str::uuid()->toString());
+        static::creating(function (Model $model) {
+            if (!$model->getKey()) {
+                $model->{$model->getKeyName()} = (string) Str::uuid();
             }
         });
     }
 
-    public function getIncrementing()
+    /**
+     * Get the value indicating whether the IDs are incrementing.
+     */
+    public function getIncrementing(): bool
     {
         return false;
     }
 
-    public function getKeyType()
+    /**
+     * Get the auto-incrementing key type.
+     */
+    public function getKeyType(): string
     {
         return 'string';
     }
