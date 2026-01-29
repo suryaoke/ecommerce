@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\interfaces\StoreBallanceRepositoryInterface;
 use App\Models\StoreBallance;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class StoreBallanceRepository implements StoreBallanceRepositoryInterface
 {
