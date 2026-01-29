@@ -11,5 +11,5 @@ Route::get('user/all/paginated', [UserController::class, 'getAllPaginated']);
 
 Route::apiResource('store', StoreController::class);
 Route::get('store/all/paginated', [StoreController::class, 'getAllPaginated']);
-
-Route::post('store/{id}/verified', [StoreController::class, 'updateVerifiedStatus']);
+Route::post('store/{id}', [StoreController::class, 'update']); 
+Route::put('store/{id}/verified', [StoreController::class, 'updateVerifiedStatus']);
