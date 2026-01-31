@@ -9,6 +9,7 @@ use App\Http\Resources\PaginateResource;
 use App\Http\Resources\StoreResource;
 use App\interfaces\StoreRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class StoreController extends Controller
 {
@@ -25,17 +26,34 @@ class StoreController extends Controller
     public function index(Request $request)
     {
         try {
-            $stores = $this->storeRepository->getAll(
-                $request->search,
-                $request->is_verified,
-                $request->limit,
-                true
+            // Generate unique cache key based on request parameters
+            $cacheKey = 'stores_' . md5(json_encode([
+                'search' => $request->search,
+                'is_verified' => $request->is_verified,
+                'limit' => $request->limit,
+            ]));
+
+            // Cache for 5 minutes (300 seconds)
+            $stores = Cache::remember($cacheKey, 300, function () use ($request) {
+                return $this->storeRepository->getAll(
+                    $request->search,
+                    $request->is_verified,
+                    $request->limit,
+                    true
+                );
+            });
+
+            return ResponseHelper::jsonResponse(
+                true,
+                'Data Toko Berhasil Diambil',
+                StoreResource::collection($stores),
+                200
             );
-            return ResponseHelper::jsonResponse(true, 'Data Toko Berhasil Diambil', StoreResource::collection($stores), 200);
         } catch (\Exception $e) {
             return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
         }
     }
+
 
     public function getAllPaginated(Request $request)
     {
