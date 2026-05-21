@@ -4,6 +4,7 @@ use App\Http\Controllers\StoreBallanceController;
 use App\Http\Controllers\StoreBallanceHistoryController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WithdrawalController;
 use Illuminate\Support\Facades\Route;
 
 Route::apiResource('user', UserController::class);
@@ -22,3 +23,7 @@ Route::get('store-ballance/all/paginated', [StoreBallanceController::class, 'get
 
 Route::apiResource('store-balance-history', StoreBallanceHistoryController::class)->except(['store','update','delete']);
 Route::get('store-balance-history/all/paginated', [StoreBallanceHistoryController::class, 'getAllPaginated']);
+
+Route::apiResource('withdrawal', WithdrawalController::class);
+
+Route::get('withdrawal/all/paginated', [WithdrawalController::class, 'getAllPaginated']);

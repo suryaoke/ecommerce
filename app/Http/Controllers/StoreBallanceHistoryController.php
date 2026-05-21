@@ -51,13 +51,6 @@ class StoreBallanceHistoryController extends Controller
             return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
         }
     }
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
@@ -77,19 +70,4 @@ class StoreBallanceHistoryController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

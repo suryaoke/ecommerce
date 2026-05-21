@@ -19,6 +19,16 @@ class Withdrawal extends Model
         'status',
     ];
 
+    protected $casts = [
+        'amount' => 'decimal:2'
+    ];
+    public function scopeSearch($query, $search)
+    {
+        return $query->where('storeBalance.store', function ($q) use ($search) {
+            $q->where('name', 'LIKE', '%' . $search . '%');
+        });
+    }
+
     public function storeBalance()
     {
         return $this->belongsTo(StoreBallance::class);
