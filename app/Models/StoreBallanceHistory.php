@@ -20,6 +20,10 @@ class StoreBallanceHistory extends Model
 
     ];
 
+    protected $casts = [
+        'amount' => 'decimal:2'
+    ];
+
     public function storeBalance()
     {
         return $this->belongsTo(StoreBallance::class);

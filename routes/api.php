@@ -20,5 +20,5 @@ Route::apiResource('store-ballance', StoreBallanceController::class)->except(['s
 Route::get('store-ballance/all/paginated', [StoreBallanceController::class, 'getAllPaginated']);
 
 
-Route::apiResource('store-balance-history', StoreBallanceHistoryController::class);
+Route::apiResource('store-balance-history', StoreBallanceHistoryController::class)->except(['store','update','delete']);
 Route::get('store-balance-history/all/paginated', [StoreBallanceHistoryController::class, 'getAllPaginated']);

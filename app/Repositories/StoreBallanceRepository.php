@@ -15,7 +15,7 @@ class StoreBallanceRepository implements StoreBallanceRepositoryInterface
             if ($search) {
                 $query->search($search);
             }
-        });
+        })->with(['storeBalanceHistories']);
 
         if ($limit) {
             $query->take($limit);
@@ -42,7 +42,7 @@ class StoreBallanceRepository implements StoreBallanceRepositoryInterface
     public function getById(
         string $id
     ) {
-        $query = StoreBallance::where('id', $id);
+        $query = StoreBallance::where('id', $id)->with(['storeBalanceHistories']);
 
         return $query->first();
     }
