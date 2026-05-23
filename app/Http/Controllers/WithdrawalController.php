@@ -65,7 +65,17 @@ class WithdrawalController extends Controller
      */
     public function show(string $id)
     {
-        //
+
+        try {
+            $withdrawal = $this->withdrawalRepository->getById($id);
+
+            if (!$withdrawal) {
+                return ResponseHelper::jsonResponse(true, 'Data Withdrawal Tidak Ditemukan', null, 404);
+            }
+            return ResponseHelper::jsonResponse(true, 'Data withdrawal Berhasil Diambil', new WithdrawalResoure($withdrawal), 200);
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
+        }
     }
 
     /**

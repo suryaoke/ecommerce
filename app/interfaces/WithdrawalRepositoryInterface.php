@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\interfaces;
 
@@ -15,4 +15,7 @@ interface WithdrawalRepositoryInterface
         ?int $rowPerPage
     );
 
+    public function getById(
+        string $id
+    );
 }
