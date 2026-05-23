@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
+use App\Http\Requests\WithdrawalStoreRequest;
 use App\Http\Resources\PaginateResource;
 use App\Http\Resources\WithdrawalResoure;
 use App\interfaces\WithdrawalRepositoryInterface;
@@ -55,11 +56,28 @@ class WithdrawalController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(WithdrawalStoreRequest $request)
     {
-        //
-    }
+        $request = $request->validated();
 
+        try {
+            $withdrawal = $this->withdrawalRepository->create($request);
+
+            return ResponseHelper::jsonResponse(
+                true,
+                'Withdrawal berhasil ditambahkan',
+                new WithdrawalResoure($withdrawal),
+                201
+            );
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(
+                false,
+                $e->getMessage(),
+                null,
+                500
+            );
+        }
+    }
     /**
      * Display the specified resource.
      */
