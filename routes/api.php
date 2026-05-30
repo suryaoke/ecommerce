@@ -24,6 +24,9 @@ Route::get('store-ballance/all/paginated', [StoreBallanceController::class, 'get
 Route::apiResource('store-balance-history', StoreBallanceHistoryController::class)->except(['store','update','delete']);
 Route::get('store-balance-history/all/paginated', [StoreBallanceHistoryController::class, 'getAllPaginated']);
 
-Route::apiResource('withdrawal', WithdrawalController::class);
+Route::apiResource('withdrawal', WithdrawalController::class)->except(['update','delete']);
 
 Route::get('withdrawal/all/paginated', [WithdrawalController::class, 'getAllPaginated']);
+
+
+Route::put('withdrawal/{id}/approve', [WithdrawalController::class, 'approve']);

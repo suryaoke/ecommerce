@@ -2,6 +2,8 @@
 
 namespace App\interfaces;
 
+use GuzzleHttp\Psr7\UploadedFile;
+
 interface WithdrawalRepositoryInterface
 {
     public function getAll(
@@ -20,5 +22,10 @@ interface WithdrawalRepositoryInterface
     );
     public function create(
         array $data
+    );
+
+    public function approve(
+        string $id,
+        UploadedFile $approve
     );
 }

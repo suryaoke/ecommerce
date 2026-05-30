@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
+use App\Http\Requests\WithdrawalApproveRequest;
 use App\Http\Requests\WithdrawalStoreRequest;
 use App\Http\Resources\PaginateResource;
 use App\Http\Resources\WithdrawalResoure;
@@ -78,6 +79,44 @@ class WithdrawalController extends Controller
             );
         }
     }
+
+    public function approve(WithdrawalApproveRequest $request, string $id)
+    {
+        $request = $request->validated();
+
+        try {
+            $withdrawal = $this->withdrawalRepository->getById($id);
+
+            if (!$withdrawal) {
+                return ResponseHelper::jsonResponse(
+                    true,
+                    'Data Withdrawal Tidak Ditemukan',
+                    null,
+                    404
+                );
+            }
+
+            $withdrawal = $this->withdrawalRepository->approve(
+                $id,
+                $request['proof']
+            );
+
+            return ResponseHelper::jsonResponse(
+                true,
+                'Data Withdrawal Berhasil Disetujui',
+                new WithdrawalResoure($withdrawal),
+                200
+            );
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(
+                false,
+                $e->getMessage(),
+                null,
+                500
+            );
+        }
+    }
+
     /**
      * Display the specified resource.
      */
@@ -94,21 +133,5 @@ class WithdrawalController extends Controller
         } catch (\Exception $e) {
             return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
         }
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }
