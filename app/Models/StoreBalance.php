@@ -6,7 +6,7 @@ use App\Traits\UUID;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class StoreBallance extends Model
+class StoreBalance extends Model
 {
     use UUID, HasFactory;
 
@@ -31,9 +31,9 @@ class StoreBallance extends Model
         return $this->belongsTo(Store::class);
     }
 
-    public function storeBallanceHistories()
+    public function storeBalanceHistories()
     {
-        return $this->hasMany(StoreBallanceHistory::class);
+        return $this->hasMany(StoreBalanceHistory::class);
     }
 
     public function withdrawals()

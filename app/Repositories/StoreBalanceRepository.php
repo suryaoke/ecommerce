@@ -2,16 +2,16 @@
 
 namespace App\Repositories;
 
-use App\interfaces\StoreBallanceRepositoryInterface;
-use App\Models\StoreBallance;
+use App\interfaces\StoreBalanceRepositoryInterface;
+use App\Models\StoreBalance;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
-class StoreBallanceRepository implements StoreBallanceRepositoryInterface
+class StoreBalanceRepository implements StoreBalanceRepositoryInterface
 {
     public function getAll(?string $search, ?int $limit, bool $exceute)
     {
-        $query = StoreBallance::where(function ($query) use ($search) {
+        $query = StoreBalance::where(function ($query) use ($search) {
             if ($search) {
                 $query->search($search);
             }
@@ -42,7 +42,7 @@ class StoreBallanceRepository implements StoreBallanceRepositoryInterface
     public function getById(
         string $id
     ) {
-        $query = StoreBallance::where('id', $id)->with(['storeBalanceHistories']);
+        $query = StoreBalance::where('id', $id)->with(['storeBalanceHistories']);
 
         return $query->first();
     }
@@ -52,15 +52,15 @@ class StoreBallanceRepository implements StoreBallanceRepositoryInterface
         DB::beginTransaction();
 
         try {
-            $storeBallance = StoreBallance::find($id);
+            $storeBalance = StoreBalance::find($id);
 
-            $storeBallance->balance = bcadd($storeBallance->balance, $amount, 2);
+            $storeBalance->balance = bcadd($storeBalance->balance, $amount, 2);
 
-            $storeBallance->save();
+            $storeBalance->save();
 
             DB::commit();
 
-            return $storeBallance;
+            return $storeBalance;
         } catch (\Exception  $e) {
             DB::rollBack();
 
@@ -73,19 +73,19 @@ class StoreBallanceRepository implements StoreBallanceRepositoryInterface
         DB::beginTransaction();
 
         try {
-            $storeBallance = StoreBallance::find($id);
+            $storeBalance = StoreBalance::find($id);
 
-            if (bccomp($storeBallance->balance, $amount, 2) < 0) {
+            if (bccomp($storeBalance->balance, $amount, 2) < 0) {
                 throw new Exception("Saldo tidak mencukupi");
             }
 
-            $storeBallance->balance = bcsub($storeBallance->balance, $amount, 2);
+            $storeBalance->balance = bcsub($storeBalance->balance, $amount, 2);
 
-            $storeBallance->save();
+            $storeBalance->save();
 
             DB::commit();
 
-            return $storeBallance;
+            return $storeBalance;
         } catch (\Exception  $e) {
             DB::rollBack();
 

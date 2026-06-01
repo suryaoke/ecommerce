@@ -3,16 +3,16 @@
 namespace Database\Factories;
 
 use App\Models\Store;
-use App\Models\StoreBallance;
+use App\Models\StoreBalance;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\StoreBallance>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\StoreBalance>
  */
-class StoreBallanceFactory extends Factory
+class StoreBalanceFactory extends Factory
 {
-    protected $model = StoreBallance::class;
+    protected $model = StoreBalance::class;
     /**
      * Define the model's default state.
      *

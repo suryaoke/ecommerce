@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\StoreBallanceController;
-use App\Http\Controllers\StoreBallanceHistoryController;
+use App\Http\Controllers\StoreBalanceController;
+use App\Http\Controllers\StoreBalanceHistoryController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WithdrawalController;
@@ -16,13 +16,13 @@ Route::get('store/all/paginated', [StoreController::class, 'getAllPaginated']);
 Route::post('store/{id}', [StoreController::class, 'update']); 
 Route::put('store/{id}/verified', [StoreController::class, 'updateVerifiedStatus']);
 
-Route::apiResource('store-ballance', StoreBallanceController::class)->except(['store','update','delete']);
+Route::apiResource('store-balance', StoreBalanceController::class)->except(['store','update','delete']);
 
-Route::get('store-ballance/all/paginated', [StoreBallanceController::class, 'getAllPaginated']);
+Route::get('store-balance/all/paginated', [StoreBalanceController::class, 'getAllPaginated']);
 
 
-Route::apiResource('store-balance-history', StoreBallanceHistoryController::class)->except(['store','update','delete']);
-Route::get('store-balance-history/all/paginated', [StoreBallanceHistoryController::class, 'getAllPaginated']);
+Route::apiResource('store-balance-history', StoreBalanceHistoryController::class)->except(['store','update','delete']);
+Route::get('store-balance-history/all/paginated', [StoreBalanceHistoryController::class, 'getAllPaginated']);
 
 Route::apiResource('withdrawal', WithdrawalController::class)->except(['update','delete']);
 

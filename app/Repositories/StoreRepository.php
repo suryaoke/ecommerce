@@ -68,7 +68,7 @@ class StoreRepository implements StoreRepositoryInterface
             $store->postal_code = $data['postal_code'];
             $store->save();
 
-            $store->storeBallance()->create(['balance' => 0]);
+            $store->storeBalance()->create(['balance' => 0]);
 
             DB::commit();
 

@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Store;
-use App\Models\StoreBallance;
+use App\Models\StoreBalance;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -16,7 +16,7 @@ class StoreSeeder extends Seeder
     {
         // Store::factory()->count(10)->create();
         Store::factory()->count(10)->create()->each(function ($store){
-            StoreBallance::factory()->create(['store_id' => $store->id]);
+            StoreBalance::factory()->create(['store_id' => $store->id]);
         });
     }
 }

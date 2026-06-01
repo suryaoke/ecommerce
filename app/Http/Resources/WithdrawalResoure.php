@@ -15,7 +15,7 @@ class WithdrawalResoure extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-               'store_balance' => new StoreBallanceResource($this->storeBalance),
+               'store_balance' => new StoreBalanceResource($this->storeBalance),
                'amount' => (float)(String) $this->amount,
                'bank_account_name' => $this->bank_account_name,
                'bank_account_number' => $this->bank_account_number,

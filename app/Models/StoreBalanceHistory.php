@@ -5,12 +5,12 @@ namespace App\Models;
 use App\Traits\UUID;
 use Illuminate\Database\Eloquent\Model;
 
-class StoreBallanceHistory extends Model
+class StoreBalanceHistory extends Model
 {
     use UUID;
 
     protected $fillable = [
-        'store_ballance_id',
+        'store_balance_id',
         'type',
         'reference_id',
         'reference_type',
@@ -24,6 +24,6 @@ class StoreBallanceHistory extends Model
 
     public function storeBalance()
     {
-        return $this->belongsTo(StoreBallance::class);
+       return $this->belongsTo(StoreBalance::class);
     }
 }

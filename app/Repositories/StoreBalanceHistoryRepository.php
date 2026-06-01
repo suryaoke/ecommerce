@@ -2,16 +2,16 @@
 
 namespace App\Repositories;
 
-use App\interfaces\StoreBallanceHistoryRepositoryInterface;
-use App\Models\StoreBallanceHistory;
+use App\interfaces\StoreBalanceHistoryRepositoryInterface;
+use App\Models\StoreBalanceHistory;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
-class StoreBallanceHistoryRepository implements StoreBallanceHistoryRepositoryInterface
+class StoreBalanceHistoryRepository implements StoreBalanceHistoryRepositoryInterface
 {
     public function getAll(?string $search, ?int $limit, bool $exceute)
     {
-        $query = StoreBallanceHistory::where(function ($query) use ($search) {
+        $query = StoreBalanceHistory::where(function ($query) use ($search) {
             if ($search) {
                 $query->search($search);
             }
@@ -42,7 +42,7 @@ class StoreBallanceHistoryRepository implements StoreBallanceHistoryRepositoryIn
     public function getById(
         string $id
     ) {
-        $query = StoreBallanceHistory::where('id', $id);
+        $query = StoreBalanceHistory::where('id', $id);
 
         return $query->first();
     }
@@ -53,7 +53,7 @@ class StoreBallanceHistoryRepository implements StoreBallanceHistoryRepositoryIn
         DB::beginTransaction();
 
         try {
-            $storeBalanceHistory = new StoreBallanceHistory;
+            $storeBalanceHistory = new StoreBalanceHistory;
             $storeBalanceHistory->store_balance_id = $data['store_balance_id'];
             $storeBalanceHistory->type = $data['type'];
             $storeBalanceHistory->reference_id = $data['reference_id'];
@@ -79,7 +79,7 @@ class StoreBallanceHistoryRepository implements StoreBallanceHistoryRepositoryIn
         DB::beginTransaction();
 
         try {
-            $storeBalanceHistory = StoreBallanceHistory::find($id);
+            $storeBalanceHistory = StoreBalanceHistory::find($id);
             $storeBalanceHistory->type = $data['type'];
             $storeBalanceHistory->reference_id = $data['reference_id'];
             $storeBalanceHistory->reference_type = $data['reference_type'];

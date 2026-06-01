@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\interfaces\StoreBallanceHistoryRepositoryInterface;
+use App\interfaces\StoreBalanceHistoryRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Helpers\ResponseHelper;
 use App\Http\Resources\StoreBalanceHistoryResource;
 use App\Http\Resources\PaginateResource;
 
-class StoreBallanceHistoryController extends Controller
+class StoreBalanceHistoryController extends Controller
 {
-    private StoreBallanceHistoryRepositoryInterface $storeBalanceHistoryRepository;
+    private StoreBalanceHistoryRepositoryInterface $storeBalanceHistoryRepository;
 
-    public function __construct(StoreBallanceHistoryRepositoryInterface $storeBalanceHistoryRepository)
+    public function __construct(StoreBalanceHistoryRepositoryInterface $storeBalanceHistoryRepository)
     {
         $this->storeBalanceHistoryRepository = $storeBalanceHistoryRepository;
     }

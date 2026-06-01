@@ -2,7 +2,7 @@
 
 namespace App\interfaces;
 
-interface StoreBallanceHistoryRepositoryInterface
+interface StoreBalanceRepositoryInterface
 {
     public function getAll(
         ?string $search,
@@ -19,12 +19,13 @@ interface StoreBallanceHistoryRepositoryInterface
         string $id
     );
 
-    public function create(
-        array $data
+    public function credit(
+        string $id,
+        string $amount,
     );
 
-    public function update(
+    public function debit(
         string $id,
-        array $data
+        string $amount,
     );
 }

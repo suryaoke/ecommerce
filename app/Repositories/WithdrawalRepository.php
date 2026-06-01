@@ -60,10 +60,10 @@ class WithdrawalRepository implements WithdrawalRepositoryInterface
             $withdrawal->bank_name = $data['bank_name'];
             $withdrawal->save();
 
-            $storeBalanceRepository = new StoreBallanceRepository;
+            $storeBalanceRepository = new StoreBalanceRepository;
             $storeBalanceRepository->debit($data['store_balance_id'], $data['amount']);
 
-            $storeBalanceRepositoryRepository = new StoreBallanceHistoryRepository;
+            $storeBalanceRepositoryRepository = new StoreBalanceHistoryRepository;
             $storeBalanceRepository->create([
                 'store_balance_id' => $withdrawal->store_balance_id,
                 'type' =>  'withdraw',
@@ -93,7 +93,7 @@ class WithdrawalRepository implements WithdrawalRepositoryInterface
             $withdrawal->proof = $proof->store('assets/withdrawal', 'public');
             $withdrawal->save();
 
-            $storeBalanceHistoryRepository = new StoreBallanceHistoryRepository;
+            $storeBalanceHistoryRepository = new StoreBalanceHistoryRepository;
 
             $storeBalanceHistoryRepository->create([
                 'store_balance_id' => $withdrawal->store_balance_id,
