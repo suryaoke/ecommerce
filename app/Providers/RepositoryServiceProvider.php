@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use App\interfaces\BuyerRepositoryInterface;
 use App\interfaces\StoreBalanceHistoryRepositoryInterface;
 use App\interfaces\StoreBalanceRepositoryInterface;
 use App\interfaces\StoreRepositoryInterface;
 use App\interfaces\UserRepositoryInterface;
 use App\interfaces\WithdrawalRepositoryInterface;
+use App\Repositories\BuyerRepository;
 use App\Repositories\StoreBalanceHistoryRepository;
 use App\Repositories\StoreBalanceRepository;
 use App\Repositories\StoreRepository;
@@ -27,6 +29,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(StoreBalanceHistoryRepositoryInterface::class, StoreBalanceHistoryRepositoryInterface::class);
         $this->app->bind(WithdrawalRepositoryInterface::class, WithdrawalRepository::class);
         $this->app->bind(StoreBalanceHistoryRepositoryInterface::class, StoreBalanceHistoryRepository::class);
+        $this->app->bind(BuyerRepositoryInterface::class, BuyerRepository::class);
         }
 
     /**

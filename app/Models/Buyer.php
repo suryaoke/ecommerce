@@ -19,9 +19,16 @@ class Buyer extends Model
     {
         return $this->belongsTo(User::class);
     }
-    
+
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->whereHas('user', function ($q) use ($search) {
+            $q->where('name', 'like', '%' . $search . '%');
+        });
     }
 }
