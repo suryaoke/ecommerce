@@ -21,10 +21,10 @@ class StoreBalanceFactory extends Factory
     public function definition(): array
     {
         return [
-             'id' => Str::uuid()->toString(),
+            'id' => Str::uuid()->toString(),
             'store_id' => Store::factory(),
             'balance' => $this->faker->randomFloat(2, 0, 1000000)
-            
+
         ];
     }
 }
