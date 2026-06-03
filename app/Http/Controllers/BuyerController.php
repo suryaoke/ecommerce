@@ -20,7 +20,7 @@ class BuyerController extends Controller
     {
         $this->buyerRepository = $buyerRepository;
     }
-   
+
 
     public function index(Request $request)
     {
@@ -49,12 +49,12 @@ class BuyerController extends Controller
                 $request['search'] ?? null,
                 $request['row_per_page'] ?? null
             );
-            return ResponseHelper::jsonResponse(true, 'Data User Berhasil Diambil', PaginateResource::make($buyers, BuyerResource::class), 200);
+            return ResponseHelper::jsonResponse(true, 'Data Buyer Berhasil Diambil', PaginateResource::make($buyers, BuyerResource::class), 200);
         } catch (\Exception $e) {
             return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
         }
     }
-    
+
 
     /**
      * Store a newly created resource in storage.
@@ -69,8 +69,19 @@ class BuyerController extends Controller
      */
     public function show(string $id)
     {
-        //
+
+        try {
+            $buyer = $this->buyerRepository->getById($id);
+
+            if (!$buyer) {
+                return ResponseHelper::jsonResponse(true, 'Data Pembeli Tidak Ditemukan', null, 404);
+            }
+            return ResponseHelper::jsonResponse(true, 'Data Pembeli Berhasil Diambil', new BuyerResource($buyer), 200);
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
+        }
     }
+
 
     /**
      * Update the specified resource in storage.
