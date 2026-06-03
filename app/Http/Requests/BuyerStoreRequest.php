@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class BuyerStoreRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'user_id'         => 'required|exists:users,id',
+            'profile_picture' => 'required|image|mimes:png,jpg',
+            'phone_number'    => 'required|string'
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'user_id'         => 'User',
+            'profile_picture' => 'Avatar',
+            'phone_number'    => 'Nomor Hp'
+        ];
+    }
+}
