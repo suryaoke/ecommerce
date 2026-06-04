@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BuyerController;
+use App\Http\Controllers\ProductCategoryContrller;
 use App\Http\Controllers\StoreBalanceController;
 use App\Http\Controllers\StoreBalanceHistoryController;
 use App\Http\Controllers\StoreController;
@@ -35,3 +36,7 @@ Route::put('withdrawal/{id}/approve', [WithdrawalController::class, 'approve']);
 Route::apiResource('buyer', BuyerController::class);
 
 Route::get('buyer/all/paginated', [BuyerController::class, 'getAllPaginated']);
+
+Route::apiResource('product-category', ProductCategoryContrller::class);
+
+Route::get('product-category/all/paginated', [ProductCategoryContrller::class, 'getAllPaginated']);

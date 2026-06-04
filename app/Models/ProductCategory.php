@@ -27,10 +27,14 @@ class ProductCategory extends Model
     {
         return $this->hasMany(ProductCategory::class, 'parent_id', 'id');
     }
-    
+
     public function products()
     {
         return $this->hasMany(Product::class);
     }
-    
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->where('name', 'like', '%' . $search . '%');
+    }
 }
