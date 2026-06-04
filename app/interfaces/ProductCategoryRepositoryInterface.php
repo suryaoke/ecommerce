@@ -5,13 +5,19 @@ namespace App\interfaces;
 interface ProductCategoryRepositoryInterface
 {
     public function getAll(
-        ?string $search,
-        ?int $limit,
-        bool $exceute
+        ?string $search = null,
+        ?bool $isParent = null,
+        ?int $limit = null,
+        bool $execute = false
     );
 
     public function getAllPaginated(
-        ?string $search,
-        ?int $rowPerPage
+        ?string $search = null,
+        ?bool $isParent = null,
+        ?int $rowPerPage = null
+    );
+
+    public function getById(
+        string $id
     );
 }

@@ -8,7 +8,7 @@ use App\Http\Resources\ProductCategoryResource;
 use App\interfaces\ProductCategoryRepositoryInterface;
 use Illuminate\Http\Request;
 
-class ProductCategoryContrller extends Controller
+class ProductCategoryController extends Controller
 {
     private ProductCategoryRepositoryInterface $productCategoryRepository;
 
@@ -24,6 +24,7 @@ class ProductCategoryContrller extends Controller
         try {
             $productCategories = $this->productCategoryRepository->getAll(
                 $request->search,
+                $request->is_parent,
                 $request->limit,
                 true
             );
@@ -40,6 +41,7 @@ class ProductCategoryContrller extends Controller
     {
         $request = $request->validate([
             'search' => 'nullable|string',
+            'is_parent' => 'nullable|boolean',
             'row_per_page' => 'required|integer'
 
         ]);
@@ -47,6 +49,7 @@ class ProductCategoryContrller extends Controller
         try {
             $productCategories = $this->productCategoryRepository->getAllPaginated(
                 $request['search'] ?? null,
+                $request['is_parent'] ?? null,
                 $request['row_per_page'] ?? null
             );
             return ResponseHelper::jsonResponse(true, 'Data Kategori Produk Berhasil Diambil', PaginateResource::make($productCategories, ProductCategoryResource::class), 200);
@@ -64,7 +67,17 @@ class ProductCategoryContrller extends Controller
      */
     public function show(string $id)
     {
-        //
+
+        try {
+            $productCategory = $this->productCategoryRepository->getById($id);
+
+            if (!$productCategory) {
+                return ResponseHelper::jsonResponse(true, 'Data Kategori Produk Tidak Ditemukan', null, 404);
+            }
+            return ResponseHelper::jsonResponse(true, 'Data Kategori Produk Berhasil Diambil', new ProductCategoryResource($productCategory), 200);
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
+        }
     }
 
     /**

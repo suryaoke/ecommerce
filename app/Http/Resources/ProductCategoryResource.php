@@ -15,14 +15,14 @@ class ProductCategoryResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'parent' => new ProductCategoryResource($this->parent),
-            'image' => asset('storage/' . $this->image),
-            'name' => $this->name,
-            'slug' => $this->slug,
-            'tagline' => $this->tagline,
+            'id'          => $this->id,
+            'parent'      => new ProductCategoryResource($this->whenLoaded('parent')),
+            'image'       => asset('storage/' . $this->image),
+            'name'        => $this->name,
+            'slug'        => $this->slug,
+            'tagline'     => $this->tagline,
             'description' => $this->description,
-            'childern' => ProductCategoryResource::collection($this->children),
+            'children'    => ProductCategoryResource::collection($this->whenLoaded('children')), // typo 'childern' diperbaiki
         ];
     }
 }
