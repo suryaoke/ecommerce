@@ -80,7 +80,7 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
             $productCategory->name = $data['name'];
             $productCategory->slug = Str::slug($data['name']);
             $productCategory->description = $data['description'];
-            
+
             if (isset($data['tagline'])) {
                 $productCategory->tagline = $data['tagline'];
             }
@@ -90,6 +90,58 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
 
             return $productCategory;
         } catch (\Exception $e) {
+            DB::rollBack();
+
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public function update(
+        string $id,
+        array $data
+    ) {
+        DB::beginTransaction();
+
+        try {
+            $productCategory = ProductCategory::find($id);
+            if (isset($data['parent_id'])) {
+                $productCategory->parent_id = $data['parent_id'];
+            }
+            if (isset($data['image'])) {
+                $productCategory->image = $data['image']->store('assets/product-category', 'public');
+            }
+            $productCategory->name = $data['name'];
+            $productCategory->slug = Str::slug($data['name']);
+            $productCategory->description = $data['description'];
+
+            if (isset($data['tagline'])) {
+                $productCategory->tagline = $data['tagline'];
+            }
+            $productCategory->save();
+
+            DB::commit();
+
+            return $productCategory;
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public function delete(string $id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $productCategory = ProductCategory::find($id);
+            $productCategory->delete();
+
+            DB::commit();
+
+            return $productCategory;
+        } catch (Exception $e) {
+
             DB::rollBack();
 
             throw new Exception($e->getMessage());

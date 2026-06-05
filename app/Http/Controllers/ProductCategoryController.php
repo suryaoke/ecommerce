@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
 use App\Http\Requests\ProductCategoryStoreRequest;
+use App\Http\Requests\ProductCategoryUpdateRequest;
 use App\Http\Resources\PaginateResource;
 use App\Http\Resources\ProductCategoryResource;
 use App\interfaces\ProductCategoryRepositoryInterface;
@@ -92,9 +93,23 @@ class ProductCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ProductCategoryUpdateRequest $request, string $id)
     {
-        //
+        $request = $request->validated();
+
+        try {
+            $productCategory = $this->productCategoryRepository->getById($id);
+
+            if (!$productCategory) {
+                return ResponseHelper::jsonResponse(true, 'Data Kategori Produk Tidak Ditemukan', null, 404);
+            }
+
+            $productCategory = $this->productCategoryRepository->update($request, $productCategory);
+
+            return ResponseHelper::jsonResponse(true, 'Data Kategori Produk Berhasil Diupdate', new ProductCategoryResource($productCategory), 200);
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
+        }
     }
 
     /**
@@ -102,6 +117,17 @@ class ProductCategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $productCategory = $this->productCategoryRepository->getById($id);
+
+            if (!$productCategory) {
+                return ResponseHelper::jsonResponse(true, 'Produk Kategori Tidak Ditemukan', null, 404);
+            }
+
+            $productCategory = $this->productCategoryRepository->delete($id);
+            return ResponseHelper::jsonResponse(true, 'Produk Kategori Berhasil Dihapus', new ProductCategoryResource($productCategory), 200);
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
+        }
     }
 }
