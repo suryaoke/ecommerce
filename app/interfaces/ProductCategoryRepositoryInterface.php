@@ -21,6 +21,10 @@ interface ProductCategoryRepositoryInterface
         string $id
     );
 
+    public function getBySlug(
+        string $slug
+    );
+
     public function create(
         array $data
     );

@@ -11,37 +11,29 @@ use App\Http\Controllers\WithdrawalController;
 use Illuminate\Support\Facades\Route;
 
 Route::apiResource('user', UserController::class);
-
 Route::get('user/all/paginated', [UserController::class, 'getAllPaginated']);
 
 Route::apiResource('store', StoreController::class);
 Route::get('store/all/paginated', [StoreController::class, 'getAllPaginated']);
-Route::post('store/{id}', [StoreController::class, 'update']); 
+Route::post('store/{id}', [StoreController::class, 'update']);
 Route::put('store/{id}/verified', [StoreController::class, 'updateVerifiedStatus']);
 
 Route::apiResource('store-balance', StoreBalanceController::class)->except(['store','update','delete']);
-
 Route::get('store-balance/all/paginated', [StoreBalanceController::class, 'getAllPaginated']);
-
 
 Route::apiResource('store-balance-history', StoreBalanceHistoryController::class)->except(['store','update','delete']);
 Route::get('store-balance-history/all/paginated', [StoreBalanceHistoryController::class, 'getAllPaginated']);
 
 Route::apiResource('withdrawal', WithdrawalController::class)->except(['update','delete']);
-
 Route::get('withdrawal/all/paginated', [WithdrawalController::class, 'getAllPaginated']);
-
-
 Route::put('withdrawal/{id}/approve', [WithdrawalController::class, 'approve']);
 
 Route::apiResource('buyer', BuyerController::class);
-
 Route::get('buyer/all/paginated', [BuyerController::class, 'getAllPaginated']);
 
 Route::apiResource('product-category', ProductCategoryController::class);
-
 Route::get('product-category/all/paginated', [ProductCategoryController::class, 'getAllPaginated']);
+Route::get('product-category/slug/{slug}', [ProductCategoryController::class, 'showBySlug']);
 
 Route::apiResource('product', ProductController::class);
-
 Route::get('product/all/paginated', [ProductController::class, 'getAllPaginated']);

@@ -90,6 +90,21 @@ class ProductCategoryController extends Controller
         }
     }
 
+    public function showBySlug(string $slug)
+    {
+
+        try {
+            $productCategory = $this->productCategoryRepository->getBySlug($slug);
+
+            if (!$productCategory) {
+                return ResponseHelper::jsonResponse(true, 'Data Kategori Produk Tidak Ditemukan', null, 404);
+            }
+            return ResponseHelper::jsonResponse(true, 'Data Kategori Produk Berhasil Diambil', new ProductCategoryResource($productCategory), 200);
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
+        }
+    }
+
     /**
      * Update the specified resource in storage.
      */

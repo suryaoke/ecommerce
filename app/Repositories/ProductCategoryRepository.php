@@ -32,7 +32,7 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
             });
 
         if ($isParent !== null) {
-            $query->whereNull('parent_id');  // filter hanya parent
+            $query->whereNull('parent_id');
         }
 
         if ($limit) {
@@ -59,7 +59,15 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
     public function getById(
         string $id
     ) {
-        $query = ProductCategory::where('id', $id);
+        $query = ProductCategory::where('id', $id)->with('children');
+
+        return $query->first();
+    }
+
+    public function getBySlug(
+        string $slug
+    ) {
+        $query = ProductCategory::where('slug', $slug)->with('children');
 
         return $query->first();
     }
