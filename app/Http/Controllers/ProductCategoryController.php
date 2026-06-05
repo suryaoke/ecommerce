@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
+use App\Http\Requests\ProductCategoryStoreRequest;
 use App\Http\Resources\PaginateResource;
 use App\Http\Resources\ProductCategoryResource;
 use App\interfaces\ProductCategoryRepositoryInterface;
@@ -57,9 +58,17 @@ class ProductCategoryController extends Controller
             return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
         }
     }
-    public function store(Request $request)
+    public function store(ProductCategoryStoreRequest $request)
     {
-        //
+        $request = $request->validated();
+
+        try {
+            $productCategory = $this->productCategoryRepository->create($request);
+
+            return ResponseHelper::jsonResponse(true, 'Kategori Produk Berhasil Ditambahkan', new ProductCategoryResource($productCategory), 201);
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
+        }
     }
 
     /**
