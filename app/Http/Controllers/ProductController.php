@@ -70,8 +70,34 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+
+        try {
+            $product = $this->productRepository->getById($id);
+
+            if (!$product) {
+                return ResponseHelper::jsonResponse(true, 'Data Produk Tidak Ditemukan', null, 404);
+            }
+            return ResponseHelper::jsonResponse(true, 'Data Produk Berhasil Diambil', new ProductResource($product), 200);
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
+        }
     }
+
+    public function showBySlug(string $slug)
+    {
+
+        try {
+            $product = $this->productRepository->getBySlug($slug);
+
+            if (!$product) {
+                return ResponseHelper::jsonResponse(true, 'Data Produk Tidak Ditemukan', null, 404);
+            }
+            return ResponseHelper::jsonResponse(true, 'Data Produk Berhasil Diambil', new ProductResource($product), 200);
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
+        }
+    }
+
 
     /**
      * Update the specified resource in storage.

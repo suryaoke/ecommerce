@@ -16,4 +16,12 @@ interface ProductRepositoryInterface
         ?string $productCategoryId = null,
         ?int $rowPerPage = null
     );
+
+    public function getById(
+        string $id
+    );
+
+     public function getBySlug(
+        string $id
+    );
 }

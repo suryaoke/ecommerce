@@ -19,16 +19,16 @@ class ProductRepository implements ProductRepositoryInterface
         bool $execute = false
     ) {
         $query = Product::where(function ($query) use ($productCategoryId, $search) {
-                if ($search) {
-                    $query->search($search);
-                }
+            if ($search) {
+                $query->search($search);
+            }
 
-                if ($productCategoryId === true) {
-                    if ($search) {
-                        $query->where('product_category_id', $productCategoryId);
-                    }
+            if ($productCategoryId === true) {
+                if ($search) {
+                    $query->where('product_category_id', $productCategoryId);
                 }
-            });
+            }
+        })->with('productImage');
 
         if ($productCategoryId !== null) {
             $query->whereNull('parent_id');  // filter hanya parent
@@ -53,5 +53,21 @@ class ProductRepository implements ProductRepositoryInterface
         $query = $this->getAll($search, $productCategoryId, null, false);
 
         return $query->paginate($rowPerPage);
+    }
+
+    public function getById(
+        string $id
+    ) {
+        $query = Product::where('id', $id)->with('productImage');
+
+        return $query->first();
+    }
+
+    public function getBySlug(
+        string $slug
+    ) {
+        $query = Product::where('slug', $slug)->with('productImage');
+
+        return $query->first();
     }
 }

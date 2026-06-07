@@ -25,7 +25,7 @@ class ProductResource extends JsonResource
             'price' => (float)(string) $this->price,
             'weight' => $this->weight,
             'stock' => $this->stock,
-            'product_images' => $this->productImages
+            'product_images' => ProductCategoryResource::collection($this->whenLoaded('productImage'))
         ];
     }
 }
