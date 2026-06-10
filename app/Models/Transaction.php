@@ -39,9 +39,9 @@ class Transaction extends Model
 
     public function store()
     {
-     return $this->belongsTo(Store::class);    
+        return $this->belongsTo(Store::class);
     }
-    
+
     public function transactionDetails()
     {
         return $this->hasMany(TransactionDetail::class);
@@ -49,5 +49,11 @@ class Transaction extends Model
     public function productReviews()
     {
         return $this->hasMany(ProductReview::class);
+    }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->where('name', 'like', '%' . $search . '%')
+            ->orWhere('email', 'like', '%' . $search . '%');
     }
 }
