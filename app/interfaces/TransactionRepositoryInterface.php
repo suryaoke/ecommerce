@@ -2,7 +2,7 @@
 
 namespace App\interfaces;
 
-interface TransactionRepositoryInterface 
+interface TransactionRepositoryInterface
 {
     public function getAll(
         ?string $search,
@@ -19,7 +19,11 @@ interface TransactionRepositoryInterface
         string $id
     );
 
-     public function getByCode(
+    public function getByCode(
         string $code
+    );
+
+    public function create(
+        array $data
     );
 }
