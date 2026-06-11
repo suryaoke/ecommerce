@@ -14,4 +14,12 @@ interface TransactionRepositoryInterface
         ?string $search,
         ?int $rowPerPage
     );
+
+    public function getById(
+        string $id
+    );
+
+     public function getByCode(
+        string $code
+    );
 }

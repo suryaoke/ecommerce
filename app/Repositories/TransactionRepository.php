@@ -36,4 +36,20 @@ class TransactionRepository implements TransactionRepositoryInterface
 
         return $query->paginate($rowPerPage);
     }
+
+    public function getById(
+        string $id
+    ) {
+        $query = Transaction::where('id', $id);
+
+        return $query->first();
+    }
+
+    public function getByCode(
+        string $code
+    ) {
+        $query = Transaction::where('code', $code);
+
+        return $query->first();
+    }
 }

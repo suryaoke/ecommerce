@@ -65,7 +65,32 @@ class TransactionController extends Controller
      */
     public function show(string $id)
     {
-        //
+
+        try {
+            $transactions = $this->transactionRepository->getById($id);
+
+            if (!$transactions) {
+                return ResponseHelper::jsonResponse(true, 'Data Transaksi Tidak Ditemukan', null, 404);
+            }
+            return ResponseHelper::jsonResponse(true, 'Data Transaksi Berhasil Diambil', new TransactionResource($transactions), 200);
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
+        }
+    }
+
+        public function showByCode(string $code)
+    {
+
+        try {
+            $transactions = $this->transactionRepository->getByCode($code);
+
+            if (!$transactions) {
+                return ResponseHelper::jsonResponse(true, 'Data Transaksi Tidak Ditemukan', null, 404);
+            }
+            return ResponseHelper::jsonResponse(true, 'Data Transaksi Berhasil Diambil', new TransactionResource($transactions), 200);
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
+        }
     }
 
     /**
