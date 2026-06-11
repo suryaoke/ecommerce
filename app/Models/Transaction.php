@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use App\Traits\UUID;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
 {
-    use UUID;
+    use UUID, HasFactory;
 
     protected $fillable = [
         'code',
@@ -18,7 +19,7 @@ class Transaction extends Model
         'city',
         'postal_code',
         'shipping',
-        'shiping_type',
+        'shipping_type',
         'shipping_cost',
         'tracking_number',
         'tax',
@@ -28,7 +29,7 @@ class Transaction extends Model
 
     protected $casts = [
         'shipping_cost' => 'decimal:2',
-        'tax' => 'decimal',
+        'tax' => 'decimal:2',
         'grand_total' => 'decimal:2'
     ];
 

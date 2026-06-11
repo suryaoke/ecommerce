@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use App\Traits\UUID;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class TransactionDetail extends Model
 {
-    use UUID;
+    use UUID, HasFactory;
 
     protected $fillable = [
 
@@ -18,7 +19,7 @@ class TransactionDetail extends Model
     ];
 
     protected $casts = [
-        'subtotal' => 'decimals:2'
+        'subtotal' => 'decimal:2'
     ];
 
     public function transaction()

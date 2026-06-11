@@ -27,7 +27,7 @@ class TransactionController extends Controller
                 $request->limit,
                 true
             );
-            return ResponseHelper::jsonResponse(true, 'Data User Berhasil Diambil', TransactionResource::collection($transactions), 200);
+            return ResponseHelper::jsonResponse(true, 'Data Transaction Berhasil Diambil', TransactionResource::collection($transactions), 200);
         } catch (\Exception $e) {
             return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
         }
@@ -46,7 +46,7 @@ class TransactionController extends Controller
                 $request['search'] ?? null,
                 $request['row_per_page'] ?? null
             );
-            return ResponseHelper::jsonResponse(true, 'Data User Berhasil Diambil', PaginateResource::make($transactions, TransactionResource::class), 200);
+            return ResponseHelper::jsonResponse(true, 'Data Transaction Berhasil Diambil', PaginateResource::make($transactions, TransactionResource::class), 200);
         } catch (\Exception $e) {
             return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
         }

@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('city');
             $table->string('postal_code');
             $table->string('shipping');
-            $table->string('shiping_type');
+            $table->string('shipping_type');
             $table->decimal('shipping_cost', 26, 2);
             $table->string('tracking_number')->nullable();
             $table->decimal('tax', 26, 2);
