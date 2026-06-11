@@ -53,7 +53,6 @@ class Transaction extends Model
 
     public function scopeSearch($query, $search)
     {
-        return $query->where('name', 'like', '%' . $search . '%')
-            ->orWhere('email', 'like', '%' . $search . '%');
+        return $query->where('code', 'like', '%' . $search . '%');
     }
 }
