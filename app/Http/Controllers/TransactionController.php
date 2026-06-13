@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
 use App\Http\Requests\TransactionStoreRequest;
+use App\Http\Requests\TransactionUpdateRequest;
 use App\Http\Resources\PaginateResource;
 use App\Http\Resources\TransactionResource;
 use App\Repositories\TransactionRepository;
@@ -105,9 +106,24 @@ class TransactionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(TransactionUpdateRequest $request, string $id)
     {
-        //
+
+        $request = $request->validated();
+        try {
+            $transaction = $this->transactionRepository->getById($id);
+
+            if (!$transaction) {
+                return ResponseHelper::jsonResponse(true, 'Data Transaksi Tidak Ditemukan', null, 404);
+            }
+            $transaction = $this->transactionRepository->updateStatus(
+                $id,
+                $request
+            );
+            return ResponseHelper::jsonResponse(true, 'Data Transaksi Berhasil Diambil', new TransactionResource($transaction), 200);
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
+        }
     }
 
     /**
@@ -115,6 +131,19 @@ class TransactionController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $transaction = $this->transactionRepository->getById($id);
+
+            if (!$transaction) {
+                return ResponseHelper::jsonResponse(true, 'Data Transaksi Tidak Ditemukan', null, 404);
+            }
+            $transaction = $this->transactionRepository->delete(
+                $id,
+
+            );
+            return ResponseHelper::jsonResponse(true, 'Data Transaksi Berhasil Dihapus', new TransactionResource($transaction), 200);
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
+        }
     }
 }
