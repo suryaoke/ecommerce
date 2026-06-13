@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
+use App\Http\Requests\TransactionStoreRequest;
 use App\Http\Resources\PaginateResource;
 use App\Http\Resources\TransactionResource;
 use App\Repositories\TransactionRepository;
@@ -55,9 +56,17 @@ class TransactionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(TransactionStoreRequest $request)
     {
-        //
+        $request = $request->validated();
+
+        try {
+            $transaction = $this->transactionRepository->create($request);
+
+            return ResponseHelper::jsonResponse(true, 'Transaksi Berhasil Ditambahkan', new TransactionResource($transaction), 201);
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
+        }
     }
 
     /**
@@ -78,7 +87,7 @@ class TransactionController extends Controller
         }
     }
 
-        public function showByCode(string $code)
+    public function showByCode(string $code)
     {
 
         try {
