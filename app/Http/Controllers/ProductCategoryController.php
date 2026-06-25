@@ -9,8 +9,11 @@ use App\Http\Resources\PaginateResource;
 use App\Http\Resources\ProductCategoryResource;
 use App\interfaces\ProductCategoryRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Spatie\Permission\Middleware\PermissionMiddleware;
 
-class ProductCategoryController extends Controller
+class ProductCategoryController extends Controller implements HasMiddleware
 {
     private ProductCategoryRepositoryInterface $productCategoryRepository;
 
@@ -21,6 +24,31 @@ class ProductCategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public static function middleware()
+    {
+        return [
+            new Middleware(
+                PermissionMiddleware::using(['product-category-list|product-category-create|product-category-edit|product-category-delete']),
+                only: ['index', 'getAllPaginated', 'show', 'showBySlug']
+            ),
+
+            new Middleware(
+                PermissionMiddleware::using(['product-category-create']),
+                only: ['store']
+            ),
+
+            new Middleware(
+                PermissionMiddleware::using(['product-category-edit']),
+                only: ['update']
+            ),
+
+            new Middleware(
+                PermissionMiddleware::using(['product-category-delete']),
+                only: ['destroy']
+            ),
+        ];
+    }
     public function index(Request $request)
     {
         try {

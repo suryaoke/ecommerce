@@ -9,8 +9,11 @@ use App\Http\Resources\PaginateResource;
 use App\Http\Resources\UserResource;
 use App\interfaces\UserRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Spatie\Permission\Middleware\PermissionMiddleware;
 
-class UserController extends Controller
+class UserController extends Controller implements HasMiddleware
 {
     private UserRepositoryInterface $userRepository;
 
@@ -18,6 +21,32 @@ class UserController extends Controller
     {
         $this->userRepository = $userRepository;
     }
+
+    public static function middleware()
+    {
+        return [
+            new Middleware(
+                PermissionMiddleware::using(['user-list|user-create|user-edit|user-delete']),
+                only: ['index', 'getAllPaginated', 'show']
+            ),
+
+            new Middleware(
+                PermissionMiddleware::using(['user-create']),
+                only: ['store']
+            ),
+
+            new Middleware(
+                PermissionMiddleware::using(['user-edit']),
+                only: ['update']
+            ),
+
+            new Middleware(
+                PermissionMiddleware::using(['user-delete']),
+                only: ['destroy']
+            ),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -66,7 +95,7 @@ class UserController extends Controller
 
             return ResponseHelper::jsonResponse(true, 'Data User Berhasil Ditambahkan', new UserResource($user), 201);
         } catch (\Exception $e) {
-             return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
+            return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
         }
     }
 
@@ -93,7 +122,7 @@ class UserController extends Controller
      */
     public function update(UserUpdateRequest $request, string $id)
     {
-         $request = $request->validated();
+        $request = $request->validated();
 
         try {
             $user = $this->userRepository->getById($id);
@@ -108,7 +137,7 @@ class UserController extends Controller
             );
             return ResponseHelper::jsonResponse(true, 'Data User Berhasil Diupdate', new UserResource($user), 200);
         } catch (\Exception $e) {
-             return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
+            return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
         }
     }
 
@@ -117,7 +146,7 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-         try {
+        try {
             $user = $this->userRepository->getById($id);
 
             if (!$user) {
@@ -127,7 +156,7 @@ class UserController extends Controller
             $user = $this->userRepository->delete($id);
             return ResponseHelper::jsonResponse(true, 'Data User Berhasil Dihapus', new UserResource($user), 200);
         } catch (\Exception $e) {
-             return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
+            return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
         }
     }
 }

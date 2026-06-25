@@ -9,8 +9,11 @@ use App\Http\Resources\BuyerResource;
 use App\Http\Resources\PaginateResource;
 use App\interfaces\BuyerRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Spatie\Permission\Middleware\PermissionMiddleware;
 
-class BuyerController extends Controller
+class BuyerController extends Controller implements HasMiddleware
 {
     /**
      * Display a listing of the resource.
@@ -21,6 +24,31 @@ class BuyerController extends Controller
     public function __construct(BuyerRepositoryInterface $buyerRepository)
     {
         $this->buyerRepository = $buyerRepository;
+    }
+
+    public static function middleware()
+    {
+        return [
+            new Middleware(
+                PermissionMiddleware::using(['buyer-list|buyer-create|buyer-edit|buyer-delete']),
+                only: ['index', 'getAllPaginated', 'show']
+            ),
+
+            new Middleware(
+                PermissionMiddleware::using(['buyer-create']),
+                only: ['store']
+            ),
+
+            new Middleware(
+                PermissionMiddleware::using(['buyer-edit']),
+                only: ['update']
+            ),
+
+            new Middleware(
+                PermissionMiddleware::using(['buyer-delete']),
+                only: ['destroy']
+            ),
+        ];
     }
 
 
@@ -66,9 +94,9 @@ class BuyerController extends Controller
         $request = $request->validated();
 
         try {
-            $user = $this->buyerRepository->create($request);
+            $buyer = $this->buyerRepository->create($request);
 
-            return ResponseHelper::jsonResponse(true, 'Data Pembeli Berhasil Ditambahkan', new BuyerResource($user), 201);
+            return ResponseHelper::jsonResponse(true, 'Data Pembeli Berhasil Ditambahkan', new BuyerResource($buyer), 201);
         } catch (\Exception $e) {
             return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
         }
@@ -112,7 +140,7 @@ class BuyerController extends Controller
                 $id,
                 $request
             );
-            return ResponseHelper::jsonResponse(true, 'Data User Berhasil Diupdate', new BuyerResource($buyer), 200);
+            return ResponseHelper::jsonResponse(true, 'Data buyer Berhasil Diupdate', new BuyerResource($buyer), 200);
         } catch (\Exception $e) {
             return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
         }

@@ -9,8 +9,11 @@ use App\Http\Resources\PaginateResource;
 use App\Http\Resources\ProductReviewResource;
 use App\interfaces\ProductReviewRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Spatie\Permission\Middleware\PermissionMiddleware;
 
-class ProductReviewController extends Controller
+class ProductReviewController extends Controller implements HasMiddleware
 {
     private ProductReviewRepositoryInterface $productReviewRepository;
 
@@ -19,6 +22,16 @@ class ProductReviewController extends Controller
         $this->productReviewRepository = $productReviewRepository;
     }
 
+    public static function middleware()
+    {
+        return [
+          
+            new Middleware(
+                PermissionMiddleware::using(['product-review-create']),
+                only: ['store']
+            ),
+        ];
+    }
     public function store(ProductReviewStoreRequest $request)
     {
         $request = $request->validated();
@@ -31,5 +44,4 @@ class ProductReviewController extends Controller
             return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
         }
     }
-
 }
