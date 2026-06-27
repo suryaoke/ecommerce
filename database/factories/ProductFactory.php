@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\ProductCategory;
 use App\Models\Store;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -24,7 +25,11 @@ class ProductFactory extends Factory
 
         return [
             'id' => Str::uuid()->toString(),
-            'store_id' => Store::factory(),
+            'user_id' => User::factory()->hasAttached(
+                config('permission.models.role')::where('name', 'store')->first(),
+                [],
+                'roles'
+            ),
             'product_category_id' => ProductCategory::inRandomOrder()->first()->id,
             'name' => $name,
             'slug' => Str::slug($name) . '-' . uniqid(),

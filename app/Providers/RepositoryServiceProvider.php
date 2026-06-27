@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\interfaces\AuthRepositoryInterface;
 use App\interfaces\BuyerRepositoryInterface;
 use App\interfaces\ProductCategoryRepositoryInterface;
 use App\interfaces\ProductRepositoryInterface;
@@ -13,6 +14,7 @@ use App\interfaces\TransactionDetailRepositoryInterface;
 use App\interfaces\TransactionRepositoryInterface;
 use App\interfaces\UserRepositoryInterface;
 use App\interfaces\WithdrawalRepositoryInterface;
+use App\Repositories\AuthRepository;
 use App\Repositories\BuyerRepository;
 use App\Repositories\ProductCategoryRepository;
 use App\Repositories\ProductRepository;
@@ -45,6 +47,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(TransactionRepositoryInterface::class, TransactionRepository::class);
         $this->app->bind(TransactionDetailRepositoryInterface::class, TransactionDetailRepository::class);
         $this->app->bind(ProductReviewRepositoryInterface::class, ProductReviewRepository::class);
+        $this->app->bind(AuthRepositoryInterface::class,AuthRepository::class);
         }
 
     /**
