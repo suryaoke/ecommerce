@@ -14,6 +14,9 @@ use App\Http\Controllers\WithdrawalController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth::sanctum')->group(function () {
+    Route::get('me', [AuthController::class, 'me']);
+    Route::post('logout', [AuthController::class, 'logout']);
+
     Route::apiResource('user', UserController::class);
     Route::get('user/all/paginated', [UserController::class, 'getAllPaginated']);
 
@@ -51,15 +54,16 @@ Route::middleware('auth::sanctum')->group(function () {
     Route::post('product-review', [ProductReviewController::class, 'store']);
 });
 
-Route::get('/product-category', [ProductCategoryController::class, 'index']);
-Route::get('/product-category/all/paginated', [ProductCategoryController::class, 'getAllPaginated']);
-Route::get('/product-category/slug/{slug}', [ProductCategoryController::class, 'getBySlug']);
+Route::get('product-category', [ProductCategoryController::class, 'index']);
+Route::get('product-category/all/paginated', [ProductCategoryController::class, 'getAllPaginated']);
+Route::get('product-category/slug/{slug}', [ProductCategoryController::class, 'getBySlug']);
 
-Route::get('/product', [ProductController::class, 'index']);
-Route::get('/product/all/paginated', [ProductController::class, 'getAllPaginated']);
-Route::get('/product/slug/{slug}', [ProductController::class, 'getBySlug']);
+Route::get('product', [ProductController::class, 'index']);
+Route::get('product/all/paginated', [ProductController::class, 'getAllPaginated']);
+Route::get('product/slug/{slug}', [ProductController::class, 'getBySlug']);
 
-Route::get('/store', [StoreController::class, 'index']);
-Route::get('/store/{store}', [StoreController::class, 'show']);
+Route::get('store', [StoreController::class, 'index']);
+Route::get('store/{store}', [StoreController::class, 'show']);
 
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);

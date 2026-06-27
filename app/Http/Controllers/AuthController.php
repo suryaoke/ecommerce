@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
+use App\Http\Requests\LoginStoreRequest;
 use App\Http\Requests\RegisterStoreRequest;
 use App\Http\Resources\UserResource;
 use App\interfaces\AuthRepositoryInterface;
@@ -31,7 +32,72 @@ class AuthController extends Controller
             return ResponseHelper::jsonResponse(
                 true,
                 'Registrasi Berhasil',
-               new UserResource($user),
+                new UserResource($user),
+                200
+            );
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(
+                false,
+                $e->getMessage(),
+                null,
+                500
+            );
+        }
+    }
+    public function login(LoginStoreRequest $request)
+    {
+        $request = $request->validated();
+
+        try {
+            $user = $this->authRepository->login($request);
+
+            return ResponseHelper::jsonResponse(
+                true,
+                'Login Berhasil',
+                new UserResource($user),
+                200
+            );
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(
+                false,
+                $e->getMessage(),
+                null,
+                500
+            );
+        }
+    }
+    public function me()
+    {
+    
+        try {
+            $user = $this->authRepository->me();
+
+            return ResponseHelper::jsonResponse(
+                true,
+                'Profile Berhasil Diambil',
+                new UserResource($user),
+                200
+            );
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(
+                false,
+                $e->getMessage(),
+                null,
+                500
+            );
+        }
+    }
+
+    public function logout()
+    {
+    
+        try {
+            $user = $this->authRepository->logout();
+
+            return ResponseHelper::jsonResponse(
+                true,
+                'logout Berhasil',
+                new UserResource($user),
                 200
             );
         } catch (\Exception $e) {

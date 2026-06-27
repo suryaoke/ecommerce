@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\interfaces\AuthRepositoryInterface;
 use App\Models\User;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AuthRepository implements AuthRepositoryInterface
@@ -30,7 +31,74 @@ class AuthRepository implements AuthRepositoryInterface
                 ]);
             }
 
-           $user->token = $user->createToken('auth_token')->plainTextToken;
+            $user->token = $user->createToken('auth_token')->plainTextToken;
+
+            DB::commit();
+
+            return $user;
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            throw new \Exception($e->getMessage());
+        }
+    }
+    public function login(
+        array $data
+    ) {
+        DB::beginTransaction();
+
+        try {
+            if (!Auth::guard('web')->attempt($data)) {
+                throw new \Exception('Unauthorized');
+            }
+
+            $user = Auth::user();
+
+            $user->token = $user->createToken('auth_token')->plainTextToken;
+
+            DB::commit();
+
+            return $user;
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            throw new \Exception($e->getMessage());
+        }
+    }
+
+    public function me()
+    {
+        DB::beginTransaction();
+
+        try {
+            if (!Auth::check()) {
+                throw new \Exception('Unauthorized');
+            }
+
+            $user = Auth::user();
+            $user->permissions = $user->roles->flatMap->permission->pluck('name');
+
+            DB::commit();
+
+            return $user;
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            throw new \Exception($e->getMessage());
+        }
+    }
+
+    public function logout()
+    {
+        DB::beginTransaction();
+
+        try {
+            if (!Auth::check()) {
+                throw new \Exception('Unauthorized');
+            }
+
+            $user = Auth::user();
+            $user->token()->delete();
 
             DB::commit();
 
